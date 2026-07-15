@@ -1,0 +1,6 @@
+# Les scripts shell doivent rester en LF, meme edites depuis Windows,
+# sinon ils cassent sur le serveur ("bad interpreter: /usr/bin/env bash^M").
+*.sh text eol=lf
+
+# Normalisation par defaut du texte
+* text=auto
