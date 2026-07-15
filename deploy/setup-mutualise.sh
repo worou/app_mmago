@@ -69,30 +69,26 @@ rm -rf "$DOCROOT/api/database"
 # .htaccess de l'API : base sur /api
 sed -i 's#RewriteBase /mamago/api/#RewriteBase /api/#' "$DOCROOT/api/.htaccess"
 
-# --- config.php de l'API (genere, hors git) --------------------------
-echo "==> Ecriture de api/config.php..."
-esc() { local s="$1"; s="${s//\\/\\\\}"; s="${s//\'/\\\'}"; printf '%s' "$s"; }
+# --- Environnement de l'API (api/.env, genere, hors git) -------------
+echo "==> Ecriture de api/.env..."
 JWT="$(openssl rand -hex 32 2>/dev/null || head -c 32 /dev/urandom | od -An -tx1 | tr -d ' \n')"
 
+# Format KEY=VALUE : la valeur est prise telle quelle (aucune expansion),
+# le mot de passe (avec $$, etc.) est ecrit litteralement via printf %s.
 {
-  printf '%s\n' '<?php'
-  printf '%s\n' '// Genere par setup-mutualise.sh — NE PAS committer.'
-  printf '%s\n' 'return ['
-  printf '%s\n' "    'db' => ["
-  printf "        'host'     => '%s',\n" "$(esc "$DB_HOST")"
-  printf "        'port'     => %s,\n"   "$DB_PORT"
-  printf "        'database' => '%s',\n" "$DB_NAME"
-  printf "        'username' => '%s',\n" "$DB_USER"
-  printf "        'password' => '%s',\n" "$(esc "$DB_PASS")"
-  printf '%s\n' "        'charset'  => 'utf8mb4',"
-  printf '%s\n' "    ],"
-  printf "    'base_path'            => '/api',\n"
-  printf "    'cors_allowed_origins' => '*',\n"
-  printf "    'jwt_secret'           => '%s',\n" "$JWT"
-  printf "    'jwt_ttl'              => 28800,\n"
-  printf '%s\n' '];'
-} > "$DOCROOT/api/config.php"
-chmod 600 "$DOCROOT/api/config.php"
+  printf 'APP_ENV=production\n'
+  printf 'DB_HOST=%s\n'     "$DB_HOST"
+  printf 'DB_PORT=%s\n'     "$DB_PORT"
+  printf 'DB_DATABASE=%s\n' "$DB_NAME"
+  printf 'DB_USERNAME=%s\n' "$DB_USER"
+  printf 'DB_PASSWORD=%s\n' "$DB_PASS"
+  printf 'DB_CHARSET=utf8mb4\n'
+  printf 'BASE_PATH=/api\n'
+  printf 'CORS_ALLOWED_ORIGINS=*\n'
+  printf 'JWT_SECRET=%s\n'  "$JWT"
+  printf 'JWT_TTL=28800\n'
+} > "$DOCROOT/api/.env"
+chmod 600 "$DOCROOT/api/.env"
 
 # --- .htaccess racine : repli SPA ------------------------------------
 cat > "$DOCROOT/.htaccess" <<'HT'

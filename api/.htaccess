@@ -1,4 +1,11 @@
 # MamaGo API - front controller rewrite
+
+# Ne JAMAIS servir les fichiers d'environnement (ils contiennent les
+# identifiants de la base). Vaut aussi pour .env, .env.production, etc.
+<FilesMatch "^\.env">
+    Require all denied
+</FilesMatch>
+
 RewriteEngine On
 RewriteBase /mamago/api/
 

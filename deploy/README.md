@@ -68,7 +68,7 @@ Ouvrir **`http://180.149.198.241/`** et se connecter :
 - **Changer les mots de passe de démo** (ou les supprimer et créer les vôtres).
 - **Changer le mot de passe SSH** partagé pendant la mise en place, et passer
   à une **clé SSH**.
-- Le mot de passe MySQL généré se trouve dans `/var/www/mamago/api/config.php`
+- Le mot de passe MySQL généré se trouve dans `/var/www/mamago/api/.env`
   (ce fichier est régénéré à chaque exécution du script).
 - Si un **nom de domaine** pointe vers le serveur, activer HTTPS :
   ```bash

@@ -184,7 +184,10 @@ const clients   = await api("/clients?pays_id=1&statut=actif&page=1");
 mamago/
 ├── api/
 │   ├── index.php            # front controller + routes + CORS
-│   ├── config.php           # BDD, base_path, CORS, secret JWT
+│   ├── config.php           # chargeur d'environnement (lit api/.env)
+│   ├── .env.example         # modèle de configuration (versionné)
+│   ├── .env.development     # config dev (local, non versionné)
+│   ├── .env.production      # config prod (local, non versionné)
 │   ├── .htaccess            # réécriture Apache -> index.php
 │   ├── core/                # Database, Request, Response, Router, Auth, Model, Period, SimplePdf
 │   ├── controllers/         # un contrôleur par domaine
@@ -195,8 +198,21 @@ mamago/
 └── README.md
 ```
 
-## Configuration
+## Configuration (fichiers d'environnement)
 
-`api/config.php` : identifiants MySQL (défaut XAMPP `root` sans mot de passe),
-`base_path` (`/mamago/api`), `cors_allowed_origins` (`*` en dev — restreindre
-en production) et `jwt_secret` (**à changer en production**).
+La configuration vient de fichiers `.env` chargés par `api/config.php` :
+
+| Fichier | Usage |
+|---------|-------|
+| `api/.env.example` | Modèle documenté (**versionné**). |
+| `api/.env.development` | Dev local XAMPP (non versionné). Chargé par défaut (`APP_ENV=development`). |
+| `api/.env.production` | Prod (non versionné — contient un secret). Chargé si `APP_ENV=production`. |
+| `api/.env` | Fichier **actif** prioritaire (écrit par le déploiement). |
+
+Variables : `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`,
+`DB_CHARSET`, `BASE_PATH`, `CORS_ALLOWED_ORIGINS`, `JWT_SECRET`, `JWT_TTL`.
+
+Pour démarrer en local : `cp api/.env.example api/.env.development` puis ajuster
+si besoin (les valeurs par défaut correspondent déjà à XAMPP). Les fichiers
+`.env` réels ne sont **jamais** versionnés ni servis par le web (bloqués dans
+`api/.htaccess`).

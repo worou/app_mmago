@@ -13,6 +13,11 @@ build/
 .env
 .env.local
 *.local
+# Fichiers d'env de l'API (contiennent des identifiants) ; seul .env.example
+# est versionne. (frontend/.env.production ne contient qu'une URL -> versionne.)
+api/.env
+api/.env.development
+api/.env.production
 
 # Logs & temporaires
 *.log

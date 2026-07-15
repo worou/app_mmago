@@ -36,7 +36,7 @@ Le script demande **l'hôte MySQL** et le **mot de passe** de l'utilisateur
 
 - copie le build du front à la racine du dossier,
 - copie l'API dans `.../wmanager/api` (sans le dossier `database`),
-- génère `api/config.php` (base `wmanager`, `base_path=/api`, secret JWT aléatoire),
+- génère `api/.env` (APP_ENV=production, base `wmanager`, `base_path=/api`, secret JWT aléatoire),
 - pose les `.htaccess` (repli SPA + base `/api`).
 
 > **Hôte MySQL** : la valeur à saisir est celle indiquée par ton hébergeur
@@ -47,7 +47,7 @@ Le script demande **l'hôte MySQL** et le **mot de passe** de l'utilisateur
 
 Cloner le dépôt **en local**, puis envoyer par SFTP le contenu de
 `frontend/dist/` (à la racine du dossier web) et le dossier `api/` (dans
-`api/`, sans `api/database/`). Créer ensuite `api/config.php` à la main (voir
+`api/`, sans `api/database/`). Créer ensuite `api/.env` à la main (voir `api/.env.example`,
 le modèle généré par le script) et adapter `RewriteBase /api/` dans
 `api/.htaccess`.
 
@@ -69,14 +69,14 @@ Se connecter (mot de passe `password`) :
 - **Changer le mot de passe MySQL** partagé pendant la mise en place.
 - **Changer le mot de passe SSH**, passer à une **clé SSH**.
 - **Changer les mots de passe de démo** une fois connecté.
-- `api/config.php` contient les identifiants de la base : le script le met en
+- `api/.env` contient les identifiants de la base : le script le met en
   `chmod 600`. Ne pas l'exposer.
 
 ## Dépannage
 
 | Symptôme | Cause probable |
 |----------|----------------|
-| **500** sur tout `/api` | PHP < 8.0, ou identifiants MySQL faux dans `api/config.php`. Voir les logs d'erreur du panneau. |
+| **500** sur tout `/api` | PHP < 8.0, ou identifiants MySQL faux dans `api/.env`. Voir les logs d'erreur du panneau. |
 | **403 Forbidden** | Dossier web root non lisible, ou `.htaccess` interdit (AllowOverride). |
 | **Page blanche / 404** sur `/interface/ci` au rechargement | `mod_rewrite` inactif ou `.htaccess` racine absent. |
 | API : *Connexion base impossible* | Mauvais **hôte** MySQL, ou l'utilisateur `wmanager` n'a pas les droits sur la base. |

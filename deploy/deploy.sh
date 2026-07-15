@@ -75,26 +75,22 @@ SQL
 
 mysql mamago < "$APP_DIR/api/database/schema.sql"
 
-# --- 4. Config API (creds + base_path = /api) ------------------------
-echo "==> Ecriture de la configuration de l'API..."
-cat > "$APP_DIR/api/config.php" <<PHP
-<?php
-// Genere par deploy.sh — ne pas committer.
-return [
-    'db' => [
-        'host'     => '127.0.0.1',
-        'port'     => 3306,
-        'database' => 'mamago',
-        'username' => 'mamago',
-        'password' => '${DB_PASS}',
-        'charset'  => 'utf8mb4',
-    ],
-    'base_path'            => '/api',
-    'cors_allowed_origins' => '*',
-    'jwt_secret'           => '${JWT_SECRET}',
-    'jwt_ttl'              => 28800,
-];
-PHP
+# --- 4. Environnement de l'API (api/.env, hors git) ------------------
+echo "==> Ecriture de api/.env..."
+cat > "$APP_DIR/api/.env" <<ENV
+APP_ENV=production
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=mamago
+DB_USERNAME=mamago
+DB_PASSWORD=${DB_PASS}
+DB_CHARSET=utf8mb4
+BASE_PATH=/api
+CORS_ALLOWED_ORIGINS=*
+JWT_SECRET=${JWT_SECRET}
+JWT_TTL=28800
+ENV
+chmod 600 "$APP_DIR/api/.env"
 
 # .htaccess de l'API : reecrire la base sur /api/
 sed -i 's#RewriteBase /mamago/api/#RewriteBase /api/#' "$APP_DIR/api/.htaccess"
