@@ -1,3 +1,10 @@
+-- MamaGo — export complet (schema + donnees de demonstration)
+-- A importer dans la base « wmanager » via phpMyAdmin (onglet Importer).
+-- Ne contient pas de CREATE DATABASE : selectionner wmanager avant import.
+
+SET FOREIGN_KEY_CHECKS=0;
+SET NAMES utf8mb4;
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -52,12 +59,12 @@ CREATE TABLE `connexions` (
   KEY `idx_connexions_utilisateur` (`utilisateur_id`),
   KEY `idx_connexions_date` (`date_connexion`),
   CONSTRAINT `fk_connexions_utilisateur` FOREIGN KEY (`utilisateur_id`) REFERENCES `utilisateurs` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 LOCK TABLES `connexions` WRITE;
 /*!40000 ALTER TABLE `connexions` DISABLE KEYS */;
-INSERT INTO `connexions` VALUES (1,1,'2026-07-05 17:51:15','192.168.1.13',3209,'modif_profil','2026-07-05 17:51:15'),(2,1,'2026-06-29 01:51:15','192.168.1.190',1327,'export_rapport','2026-06-29 01:51:15'),(3,1,'2026-07-06 10:51:15','192.168.1.191',799,'consultation_stats','2026-07-06 10:51:15'),(4,1,'2026-06-18 05:51:15','192.168.1.22',2434,'connexion','2026-06-18 05:51:15'),(5,1,'2026-07-06 20:51:15','192.168.1.203',1363,'connexion','2026-07-06 20:51:15'),(6,2,'2026-07-09 12:51:15','192.168.1.167',373,'export_rapport','2026-07-09 12:51:15'),(7,2,'2026-07-04 23:51:15','192.168.1.8',3089,'connexion','2026-07-04 23:51:15'),(8,2,'2026-07-07 03:51:15','192.168.1.75',3456,'export_rapport','2026-07-07 03:51:15'),(9,2,'2026-06-29 14:51:15','192.168.1.247',740,'export_rapport','2026-06-29 14:51:15'),(10,2,'2026-07-03 01:51:15','192.168.1.252',3353,'export_rapport','2026-07-03 01:51:15'),(11,3,'2026-07-08 01:51:15','192.168.1.134',3284,'export_rapport','2026-07-08 01:51:15'),(12,3,'2026-06-26 10:51:15','192.168.1.4',1543,'export_rapport','2026-06-26 10:51:15'),(13,3,'2026-07-11 04:51:15','192.168.1.9',767,'connexion','2026-07-11 04:51:15'),(14,3,'2026-06-27 09:51:15','192.168.1.128',772,'connexion','2026-06-27 09:51:15'),(15,3,'2026-06-22 13:51:15','192.168.1.23',2112,'consultation_stats','2026-06-22 13:51:15');
+INSERT INTO `connexions` VALUES (1,1,'2026-07-05 17:51:15','192.168.1.13',3209,'modif_profil','2026-07-05 17:51:15'),(2,1,'2026-06-29 01:51:15','192.168.1.190',1327,'export_rapport','2026-06-29 01:51:15'),(3,1,'2026-07-06 10:51:15','192.168.1.191',799,'consultation_stats','2026-07-06 10:51:15'),(4,1,'2026-06-18 05:51:15','192.168.1.22',2434,'connexion','2026-06-18 05:51:15'),(5,1,'2026-07-06 20:51:15','192.168.1.203',1363,'connexion','2026-07-06 20:51:15'),(6,2,'2026-07-09 12:51:15','192.168.1.167',373,'export_rapport','2026-07-09 12:51:15'),(7,2,'2026-07-04 23:51:15','192.168.1.8',3089,'connexion','2026-07-04 23:51:15'),(8,2,'2026-07-07 03:51:15','192.168.1.75',3456,'export_rapport','2026-07-07 03:51:15'),(9,2,'2026-06-29 14:51:15','192.168.1.247',740,'export_rapport','2026-06-29 14:51:15'),(10,2,'2026-07-03 01:51:15','192.168.1.252',3353,'export_rapport','2026-07-03 01:51:15'),(11,3,'2026-07-08 01:51:15','192.168.1.134',3284,'export_rapport','2026-07-08 01:51:15'),(12,3,'2026-06-26 10:51:15','192.168.1.4',1543,'export_rapport','2026-06-26 10:51:15'),(13,3,'2026-07-11 04:51:15','192.168.1.9',767,'connexion','2026-07-11 04:51:15'),(14,3,'2026-06-27 09:51:15','192.168.1.128',772,'connexion','2026-06-27 09:51:15'),(15,3,'2026-06-22 13:51:15','192.168.1.23',2112,'consultation_stats','2026-06-22 13:51:15'),(16,1,'2026-07-15 23:44:06','::1',NULL,'connexion','2026-07-15 23:44:06');
 /*!40000 ALTER TABLE `connexions` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `courses`;
@@ -394,7 +401,7 @@ CREATE TABLE `utilisateurs` (
 
 LOCK TABLES `utilisateurs` WRITE;
 /*!40000 ALTER TABLE `utilisateurs` DISABLE KEYS */;
-INSERT INTO `utilisateurs` VALUES (1,1,'Admin','Super','admin@mamago.com','+225 07 00 00 00 01','$2y$10$pjDVUljgNHH7GOqoJM1KEu8ir7fnos/uvNE6P.9zEicyIrHiRLqPy','clair','vert',1,NULL,'2026-07-15 15:51:12','2026-07-15 15:51:12'),(2,2,'Kouassi','Aya','ci.admin@mamago.com','+225 07 45 12 88 30','$2y$10$pjDVUljgNHH7GOqoJM1KEu8ir7fnos/uvNE6P.9zEicyIrHiRLqPy','clair','vert',1,NULL,'2026-07-15 15:51:12','2026-07-15 15:51:12'),(3,3,'Ndiaye','Moussa','commercial@mamago.com','+221 77 512 44 09','$2y$10$pjDVUljgNHH7GOqoJM1KEu8ir7fnos/uvNE6P.9zEicyIrHiRLqPy','clair','vert',1,NULL,'2026-07-15 15:51:12','2026-07-15 15:51:12');
+INSERT INTO `utilisateurs` VALUES (1,1,'Admin','Super','admin@mamago.com','+225 07 00 00 00 01','$2y$10$pjDVUljgNHH7GOqoJM1KEu8ir7fnos/uvNE6P.9zEicyIrHiRLqPy','clair','vert',1,'2026-07-15 23:44:06','2026-07-15 15:51:12','2026-07-15 15:51:12'),(2,2,'Kouassi','Aya','ci.admin@mamago.com','+225 07 45 12 88 30','$2y$10$pjDVUljgNHH7GOqoJM1KEu8ir7fnos/uvNE6P.9zEicyIrHiRLqPy','clair','vert',1,NULL,'2026-07-15 15:51:12','2026-07-15 15:51:12'),(3,3,'Ndiaye','Moussa','commercial@mamago.com','+221 77 512 44 09','$2y$10$pjDVUljgNHH7GOqoJM1KEu8ir7fnos/uvNE6P.9zEicyIrHiRLqPy','clair','vert',1,NULL,'2026-07-15 15:51:12','2026-07-15 15:51:12');
 /*!40000 ALTER TABLE `utilisateurs` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `villes`;
@@ -427,3 +434,5 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
+
+SET FOREIGN_KEY_CHECKS=1;
