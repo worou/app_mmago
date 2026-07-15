@@ -4,8 +4,9 @@ node_modules/
 vendor/
 
 # Builds
-frontend/dist/
-dist/
+# NB : frontend/dist est VOLONTAIREMENT versionne (build de prod livre au
+# serveur, qui n'a donc pas besoin de Node). Relancer `npm run build` apres
+# toute modif du front, ou laisser deploy.sh reconstruire pour une autre cible.
 build/
 
 # Environnement / secrets locaux

@@ -27,10 +27,15 @@ git clone https://github.com/worou/Dashboard_mamago.git ~/mamago
 sudo bash ~/mamago/deploy/deploy.sh 180.149.198.241
 ```
 
-Le script installe Apache, PHP 8, MariaDB et Node 20, clone le code dans
+Le script installe Apache, PHP 8 et MariaDB, clone le code dans
 `/var/www/mamago`, crée la base + charge le schéma et les données de démo,
 configure l'API (`base_path = /api`, identifiants MySQL générés, secret JWT
-aléatoire), build le front vers l'IP, puis publie le VirtualHost Apache.
+aléatoire), puis publie le VirtualHost Apache.
+
+**Le front est livré déjà construit** (`frontend/dist/`, généré pour l'IP
+`180.149.198.241`) : le serveur n'a donc **pas besoin de Node**. Si tu passes
+une **IP différente** au script, il détecte que le build ne correspond pas,
+installe Node 20 et reconstruit automatiquement pour la bonne cible.
 
 À la fin, il affiche l'URL, l'état de l'API et les comptes de démo.
 
@@ -60,7 +65,15 @@ Ouvrir **`http://180.149.198.241/`** et se connecter :
 
 ## Mettre à jour l'application
 
-Pour redéployer après un nouveau `git push` :
+Après une modif du **front**, reconstruis le build de prod (sur ta machine de
+dev) et commite-le, pour qu'il soit livré au serveur :
+
+```bash
+cd frontend && npm run build         # met à jour frontend/dist
+git add frontend/dist && git commit -m "build prod" && git push
+```
+
+Puis, sur le serveur :
 
 ```bash
 sudo bash ~/mamago/deploy/deploy.sh 180.149.198.241

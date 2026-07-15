@@ -37,18 +37,8 @@ echo "==> Installation des paquets (Apache, PHP, MariaDB, git)..."
 apt-get update -y
 apt-get install -y apache2 mariadb-server git curl ca-certificates \
     php php-cli php-mysql php-mbstring php-xml php-curl libapache2-mod-php
-
-# Node.js 20 (Vite 5 exige Node >= 18 ; le depot Ubuntu est souvent trop ancien)
-NEED_NODE=1
-if command -v node >/dev/null 2>&1; then
-  NODE_MAJOR="$(node -v | sed 's/v\([0-9]*\).*/\1/')"
-  if [ "${NODE_MAJOR:-0}" -ge 18 ] 2>/dev/null; then NEED_NODE=0; fi
-fi
-if [ "$NEED_NODE" -eq 1 ]; then
-  echo "==> Installation de Node.js 20..."
-  curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
-  apt-get install -y nodejs
-fi
+# Node n'est PAS installe ici : le front est livre pre-construit (dist/).
+# Il ne sera installe que si un rebuild est necessaire (voir etape 5).
 
 a2enmod rewrite >/dev/null
 systemctl enable --now apache2 mariadb >/dev/null 2>&1 || true
@@ -109,16 +99,23 @@ sed -i 's#RewriteBase /mamago/api/#RewriteBase /api/#' "$APP_DIR/api/.htaccess"
 echo "==> Chargement des donnees de demonstration..."
 php "$APP_DIR/api/database/seed.php"
 
-# --- 5. Build du front (pointe vers l'API du serveur) ----------------
-echo "==> Build du front React..."
-cat > "$APP_DIR/frontend/.env" <<ENV
+# --- 5. Front : build de prod pre-livre, sinon reconstruction --------
+# Le depot contient deja frontend/dist construit pour l'IP cible. On ne
+# reconstruit (et n'installe Node) que si ce build ne correspond pas.
+if [ -f "$APP_DIR/frontend/dist/index.html" ] && grep -rq "$SERVER_IP" "$APP_DIR/frontend/dist" 2>/dev/null; then
+  echo "==> Front pre-construit pour $SERVER_IP detecte — pas de build a faire."
+else
+  echo "==> Reconstruction du front (installation de Node 20)..."
+  if ! command -v node >/dev/null 2>&1 || [ "$(node -v 2>/dev/null | sed 's/v\([0-9]*\).*/\1/' || echo 0)" -lt 18 ] 2>/dev/null; then
+    curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+    apt-get install -y nodejs
+  fi
+  cat > "$APP_DIR/frontend/.env" <<ENV
 VITE_API_URL=http://${SERVER_IP}/api
 VITE_INTERFACE_BASE_URL=http://${SERVER_IP}
 ENV
-
-cd "$APP_DIR/frontend"
-npm install --no-audit --no-fund
-npm run build
+  ( cd "$APP_DIR/frontend" && npm install --no-audit --no-fund && npm run build )
+fi
 
 # --- 6. VirtualHost Apache -------------------------------------------
 echo "==> Configuration d'Apache..."
