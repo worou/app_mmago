@@ -7,15 +7,17 @@
 #   (meme origine : pas de probleme de CORS)
 #
 # Usage (en root) :
-#   sudo bash deploy.sh <IP_PUBLIQUE>
+#   sudo bash deploy.sh <IP_PUBLIQUE> [CHEMIN_DEPLOIEMENT]
 #   ex : sudo bash deploy.sh 180.149.198.241
+#   ex : sudo bash deploy.sh 180.149.198.241 /home/nicodem/var/www/mamago/wmanager
 #
 # Idempotent pour la stack ; RE-EXECUTER REINITIALISE LA BASE (schema+seed).
 # =====================================================================
 set -euo pipefail
 
 REPO_URL="https://github.com/worou/Dashboard_mamago.git"
-APP_DIR="/var/www/mamago"
+# 2e argument = dossier de deploiement (defaut : /var/www/mamago)
+APP_DIR="${2:-/var/www/mamago}"
 
 # --- IP publique (argument, sinon auto-detection) --------------------
 SERVER_IP="${1:-}"
@@ -30,6 +32,7 @@ if [ "$(id -u)" -ne 0 ]; then
 fi
 
 echo "==> Deploiement de MamaGo sur http://$SERVER_IP/"
+echo "==> Dossier : $APP_DIR"
 export DEBIAN_FRONTEND=noninteractive
 
 # --- 1. Paquets systeme ----------------------------------------------
@@ -45,6 +48,7 @@ systemctl enable --now apache2 mariadb >/dev/null 2>&1 || true
 
 # --- 2. Code source ---------------------------------------------------
 echo "==> Recuperation du code..."
+mkdir -p "$(dirname "$APP_DIR")"
 if [ -d "$APP_DIR/.git" ]; then
   git -C "$APP_DIR" fetch --all -q && git -C "$APP_DIR" reset --hard origin/main -q
 else
@@ -148,6 +152,16 @@ APACHE
 a2dissite 000-default.conf >/dev/null 2>&1 || true
 a2ensite mamago.conf >/dev/null
 chown -R www-data:www-data "$APP_DIR"
+
+# Apache doit pouvoir TRAVERSER chaque dossier parent jusqu'au dist.
+# Indispensable si le deploiement est sous /home/... (sinon 403 Forbidden).
+# o+x = traversee seule (n'expose pas le listing du contenu).
+_p="$APP_DIR"
+while [ "$_p" != "/" ] && [ -n "$_p" ]; do
+  chmod o+x "$_p" 2>/dev/null || true
+  _p="$(dirname "$_p")"
+done
+
 systemctl reload apache2
 
 # Pare-feu : ouvrir le port 80 si ufw est actif (sans couper le SSH)

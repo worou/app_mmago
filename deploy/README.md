@@ -23,9 +23,23 @@ sudo apt-get update && sudo apt-get install -y git
 # 2. Récupérer le projet
 git clone https://github.com/worou/Dashboard_mamago.git ~/mamago
 
-# 3. Lancer le déploiement (passe ton IP publique en argument)
+# 3. Lancer le déploiement (IP publique en argument)
 sudo bash ~/mamago/deploy/deploy.sh 180.149.198.241
 ```
+
+### Choisir le dossier de déploiement
+
+Par défaut l'app est déployée dans `/var/www/mamago`. Pour un autre dossier,
+le passer en **2ᵉ argument** :
+
+```bash
+sudo bash ~/mamago/deploy/deploy.sh 180.149.198.241 /home/nicodem/var/www/mamago/wmanager
+```
+
+> Si le dossier est sous `/home/...`, le script ajoute automatiquement la
+> permission de **traversée** (`o+x`) sur chaque dossier parent, sans quoi
+> Apache renverrait **403 Forbidden**. C'est une traversée seule : le contenu
+> du home n'est pas exposé en listing.
 
 Le script installe Apache, PHP 8 et MariaDB, clone le code dans
 `/var/www/mamago`, crée la base + charge le schéma et les données de démo,
