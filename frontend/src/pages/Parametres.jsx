@@ -1,8 +1,8 @@
 import { api } from '../lib/api';
 import { useFetch } from '../lib/useFetch';
 import { useTheme } from '../context/ThemeContext';
-import { ICONS, S, styleObj, html, icHtml } from '../lib/ui';
-import { IconSpan, Loader, ErrorBox, Empty } from '../components/common';
+import { ICONS, S, styleObj, html, icHtml, fmtDateTime } from '../lib/ui';
+import { Loader, ErrorBox, Empty } from '../components/common';
 
 const ACT_META = {
   connexion: { tint: ['var(--green-dim)', 'var(--green-hi)'], icon: ICONS.login, verb: "s'est connecté" },
@@ -11,13 +11,6 @@ const ACT_META = {
   consultation_stats: { tint: ['rgba(232,178,74,.16)', 'var(--amber)'], icon: ICONS.stat, verb: 'a consulté les stats' },
 };
 const metaFor = (a) => ACT_META[a] || { tint: ['var(--surface2)', 'var(--text2)'], icon: ICONS.settings, verb: a || 'action' };
-
-function fmtDate(s) {
-  if (!s) return '';
-  const d = new Date(String(s).replace(' ', 'T'));
-  if (isNaN(d)) return s;
-  return d.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
-}
 
 const check = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="var(--green)"/><path d="m8 12 3 3 5-6" stroke="#04140C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const dot = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="var(--border-hi)" stroke-width="2"/></svg>';
@@ -104,7 +97,7 @@ export default function Parametres() {
                       <div style={{ fontSize: 13.5 }}><span style={{ fontWeight: 700 }}>{name}</span> <span style={{ color: 'var(--text2)' }}>{m.verb}</span></div>
                       <div style={{ fontSize: 11.5, color: 'var(--muted)', marginTop: 3 }}>IP {a.adresse_ip}{a.duree_secondes ? ' · ' + Math.round(a.duree_secondes / 60) + ' min' : ''}</div>
                     </div>
-                    <div style={{ fontSize: 11.5, color: 'var(--muted)', whiteSpace: 'nowrap' }}>{fmtDate(a.date_connexion)}</div>
+                    <div style={{ fontSize: 11.5, color: 'var(--muted)', whiteSpace: 'nowrap' }}>{fmtDateTime(a.date_connexion, '')}</div>
                   </div>
                 );
               })}

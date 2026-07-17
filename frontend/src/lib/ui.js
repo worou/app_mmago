@@ -54,6 +54,14 @@ export function tintFor(key = '') {
 export const initials = (name = '') =>
   name.trim().split(/\s+/).map((x) => x[0] || '').join('').slice(0, 2).toUpperCase();
 
+// Formate un datetime SQL ('YYYY-MM-DD HH:MM:SS') en date/heure courte fr.
+// `empty` : valeur renvoyee si la date est vide/absente.
+export function fmtDateTime(s, empty = '—') {
+  if (!s) return empty;
+  const d = new Date(String(s).replace(' ', 'T'));
+  return isNaN(d) ? s : d.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+}
+
 export const codeFor = (p) => (p.code_iso || (p.nom_pays || '??').slice(0, 2)).toUpperCase();
 
 // Pastille de variation (delta)

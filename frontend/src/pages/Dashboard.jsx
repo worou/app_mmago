@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../lib/api';
 import { useFetch, monthLabel } from '../lib/useFetch';
-import { money, moneyDev, ICONS, CHART_COLORS, tintFor, codeFor, deltaPill, deltaText, lastNDays, S, styleObj, html, icHtml } from '../lib/ui';
+import { money, moneyDev, ICONS, CHART_COLORS, tintFor, codeFor, deltaPill, lastNDays, S, styleObj } from '../lib/ui';
 import { AreaChart, Donut, Sparkline } from '../components/Charts';
 import { IconSpan, Loader, ErrorBox } from '../components/common';
 

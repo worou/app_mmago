@@ -5,18 +5,11 @@
 
 class VillesController
 {
+    use ResolvesPays;   // fournit paysOfVille()
+
     private function model(): Model
     {
         return new Model('villes', ['pays_id', 'nom_ville'], ['id' => 'int', 'pays_id' => 'int']);
-    }
-
-    // Pays d'une ville existante (pour verifier l'acces avant modif/suppression).
-    private function paysOfVille($villeId): ?int
-    {
-        $stmt = Database::pdo()->prepare('SELECT pays_id FROM villes WHERE id = ?');
-        $stmt->execute([$villeId]);
-        $p = $stmt->fetchColumn();
-        return $p === false ? null : (int) $p;
     }
 
     public function index(Request $req): void

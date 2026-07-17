@@ -14,7 +14,7 @@ $config = require __DIR__ . '/config.php';
 foreach ([
     'core/Response.php', 'core/Database.php', 'core/Request.php',
     'core/Router.php', 'core/Auth.php', 'core/Model.php',
-    'core/Period.php', 'core/SimplePdf.php',
+    'core/Period.php', 'core/SimplePdf.php', 'core/ResolvesPays.php',
     'controllers/ResourceController.php', 'controllers/AuthController.php',
     'controllers/DashboardController.php', 'controllers/StatsController.php',
     'controllers/PaysController.php', 'controllers/VillesController.php',

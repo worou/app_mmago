@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { api } from '../lib/api';
 import { useFetch } from '../lib/useFetch';
-import { money, moneyDev, ICONS, tintFor, codeFor, interfaceUrl, initials, S, styleObj, html, icHtml } from '../lib/ui';
+import { money, moneyDev, ICONS, tintFor, codeFor, interfaceUrl, initials, fmtDateTime, S, styleObj } from '../lib/ui';
 import { IconSpan, Loader, ErrorBox, Empty } from '../components/common';
 import Modal from '../components/Modal';
 import { useToast } from '../context/ToastContext';
@@ -16,12 +16,6 @@ const TABS = [
 ];
 
 const SINGULAR = { villes: 'ville', livreurs: 'livreur', clients: 'client', courses: 'course' };
-
-const fmtDate = (s) => {
-  if (!s) return '—';
-  const d = new Date(String(s).replace(' ', 'T'));
-  return isNaN(d) ? s : d.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
-};
 
 const pill = (txt, ok) =>
   'font-size:12px;font-weight:700;padding:3px 9px;border-radius:20px;background:' +
@@ -216,7 +210,7 @@ export default function EspacePays() {
       cols: ['Date', 'Ville', 'Service', 'Client', 'Livreur', 'Montant', 'Statut'],
       rows: courses,
       cells: (c) => [
-        fmtDate(c.date_course), c.nom_ville, c.nom_service,
+        fmtDateTime(c.date_course), c.nom_ville, c.nom_service,
         c.client_nom, c.livreur_nom || '—',
         <span style={{ fontFamily: 'Space Grotesk', fontWeight: 600 }}>{moneyDev(c.montant, devise)}</span>,
         <span style={styleObj(pill(c.statut, c.statut === 'terminee'))}>{c.statut}</span>,
@@ -333,7 +327,7 @@ export default function EspacePays() {
               </div>
 
               <div style={{ fontSize: 11.5, color: 'var(--muted)', marginTop: 6 }}>
-                Dernière connexion : {fmtDate(responsable.derniere_connexion)}
+                Dernière connexion : {fmtDateTime(responsable.derniere_connexion)}
                 {responsable.created_at && ` · compte créé le ${String(responsable.created_at).slice(0, 10)}`}
               </div>
             </div>

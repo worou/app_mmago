@@ -5,6 +5,8 @@
 
 class PaiementsController
 {
+    use ResolvesPays;
+
     private function model(): Model
     {
         return new Model(

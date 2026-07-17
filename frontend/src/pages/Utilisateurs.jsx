@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { api } from '../lib/api';
 import { useFetch } from '../lib/useFetch';
-import { ICONS, initials, S, styleObj, html, icHtml } from '../lib/ui';
+import { ICONS, initials, S, styleObj, html, icHtml, fmtDateTime } from '../lib/ui';
 import { IconSpan, Loader, ErrorBox, Empty } from '../components/common';
 import Modal from '../components/Modal';
 import { useToast } from '../context/ToastContext';
@@ -25,12 +25,6 @@ const STATUT_PILL = {
   validee: ['var(--green-dim)', 'var(--green-hi)', 'Validée'],
   refusee: ['var(--red-dim)', 'var(--red)', 'Refusée'],
 };
-
-function fmtDate(s) {
-  if (!s) return 'Jamais';
-  const d = new Date(String(s).replace(' ', 'T'));
-  return isNaN(d) ? s : d.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
-}
 
 export default function Utilisateurs() {
   const { toast } = useToast();
@@ -352,7 +346,7 @@ export default function Utilisateurs() {
                           ? u.villes.map((v) => v.nom_ville).join(', ')
                           : <span style={{ color: 'var(--muted)' }}>—</span>}
                       </td>
-                      <td style={{ padding: '13px 14px', fontSize: 13, color: 'var(--text2)' }}>{fmtDate(u.derniere_connexion)}</td>
+                      <td style={{ padding: '13px 14px', fontSize: 13, color: 'var(--text2)' }}>{fmtDateTime(u.derniere_connexion, 'Jamais')}</td>
                       <td style={{ padding: '13px 14px' }}>
                         <span style={{ display: 'inline-flex', alignItems: 'center', fontSize: 12, fontWeight: 600, color: u.actif ? 'var(--green-hi)' : 'var(--muted)' }}>
                           <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'currentColor', display: 'inline-block', marginRight: 6 }} />

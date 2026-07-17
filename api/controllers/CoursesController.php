@@ -6,6 +6,8 @@
 
 class CoursesController
 {
+    use ResolvesPays;
+
     private function model(): Model
     {
         return new Model(
@@ -22,14 +24,6 @@ class CoursesController
             'SELECT v.pays_id FROM courses co JOIN villes v ON v.id = co.ville_id WHERE co.id = ?'
         );
         $stmt->execute([$id]);
-        $p = $stmt->fetchColumn();
-        return $p === false ? null : (int) $p;
-    }
-
-    private function paysOfVille($villeId): ?int
-    {
-        $stmt = Database::pdo()->prepare('SELECT pays_id FROM villes WHERE id = ?');
-        $stmt->execute([$villeId]);
         $p = $stmt->fetchColumn();
         return $p === false ? null : (int) $p;
     }

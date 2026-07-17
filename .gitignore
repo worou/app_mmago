@@ -34,3 +34,6 @@ Thumbs.db
 # Exports generes par l'API
 api/rapports/
 *.csv.tmp
+
+# Config de prod avec identifiants en dur (ne pas committer)
+deploy/config.prod.php
