@@ -1,0 +1,49 @@
+# ── Secrets — never commit ───────────────────────────────────────────────
+# (backend/ and frontend/ have their own .gitignore too; this is belt-and-braces)
+.env
+.env.*
+!.env.example
+**/.env
+!**/.env.example
+
+# ── Dependencies ─────────────────────────────────────────────────────────
+/vendor
+**/vendor
+node_modules
+**/node_modules
+
+# ── Build output ─────────────────────────────────────────────────────────
+/frontend/dist
+/frontend/dist-ssr
+/backend/public/build
+/backend/public/hot
+/backend/public/storage
+/backend/storage/*.key
+/backend/bootstrap/cache/*.php
+
+# ── Local tooling / not part of the app ──────────────────────────────────
+composer.phar
+/.claude
+scratchpad/
+
+# ── Database dump — regenerable via `artisan db:seed`, kept out of history ─
+dump.sql
+*.sql
+
+# ── Design reference (personal image) ────────────────────────────────────
+WhatsApp Image*.jpeg
+
+# ── Laravel runtime ──────────────────────────────────────────────────────
+/backend/storage/framework/cache/*
+/backend/storage/framework/sessions/*
+/backend/storage/framework/views/*
+/backend/storage/logs/*
+!/backend/storage/**/.gitignore
+
+# ── OS / editor ──────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.log
+.idea/
+.vscode/*
+!.vscode/extensions.json

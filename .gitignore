@@ -1,0 +1,30 @@
+# Sauvegardes des bases d'avant la fusion : utiles localement, hors dépôt
+# (elles contiennent les données réelles).
+/_backup_fusion/
+
+# Dépendances
+node_modules/
+vendor/
+
+# Build
+dist/
+build/
+
+# Environnements — les .env.example sont versionnés, pas les .env réels
+.env
+.env.development
+.env.production
+.env.local
+
+# Laravel
+mamagoApp/backend/storage/*.key
+mamagoApp/backend/storage/framework/cache/data/*
+mamagoApp/backend/storage/framework/sessions/*
+mamagoApp/backend/storage/framework/views/*
+mamagoApp/backend/storage/logs/*
+mamagoApp/backend/bootstrap/cache/*.php
+
+# Divers
+.DS_Store
+Thumbs.db
+*.log
