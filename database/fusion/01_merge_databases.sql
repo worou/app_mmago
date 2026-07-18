@@ -22,10 +22,13 @@
 USE mamago;
 
 -- Garde-fou : echoue si la fusion a deja ete appliquee.
+-- Collationnement force : cette table nait avant l'harmonisation de l'etape
+-- 0, elle heriterait sinon de l'ancien utf8mb4_general_ci et ferait mentir
+-- le controle de collationnement de 02_verify.sql.
 CREATE TABLE _fusion_applied (
     id          TINYINT PRIMARY KEY,
     applique_le DATETIME NOT NULL
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 INSERT INTO _fusion_applied (id, applique_le) VALUES (1, NOW());
 
 SET FOREIGN_KEY_CHECKS = 0;
